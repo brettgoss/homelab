@@ -26,10 +26,10 @@ services:
       - web
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.unifi.rule=Host(`unifi.${HOSTNAME}`)"
-      - "traefik.http.routers.unifi.entrypoints=web"
+      - "traefik.http.routers.unifi.rule=Host(`unifi.internal.${HOSTNAME}`)"
+      - "traefik.http.routers.unifi.entrypoints=web-secure"
       - "traefik.http.routers.unifi.tls=true"
-      - "traefik.http.routers.unifi.tls.passthrough=true"
+      - "traefik.http.routers.unifi.tls.certResolver=primary"
       - "traefik.http.services.unifi.loadbalancer.server.port=8443"
       - "traefik.http.services.unifi.loadbalancer.server.scheme=https"
 

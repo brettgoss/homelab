@@ -1,3 +1,4 @@
 unifi/log/*
 unifi/data/*
+traefik/acme.json
 *.env

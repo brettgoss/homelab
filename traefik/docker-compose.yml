@@ -10,14 +10,28 @@ services:
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
       - "--entrypoints.web.address=:80"
+      - "--entryPoints.web-secure.address=:443"
       - "--serverstransport.insecureskipverify=true"
+      - --certificatesResolvers.primary.acme.email=${CLOUDFLARE_EMAIL}
+      - --certificatesResolvers.primary.acme.storage=acme.json
+      - --certificatesResolvers.primary.acme.dnsChallenge=true
+      - --certificatesResolvers.primary.acme.dnsChallenge.provider=cloudflare
+      - --certificatesResolvers.primary.acme.dnsChallenge.delayBeforeCheck=0
+    environment:
+      - CLOUDFLARE_EMAIL=${CLOUDFLARE_EMAIL}
+      - CLOUDFLARE_API_KEY=${CLOUDFLARE_API_KEY}
     ports:
       - "80:80"
       - "443:443"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "./acme.json:/acme.json"
     networks:
       - web
+    labels:
+      # wildcard certs
+      - "traefik.http.routers.api.tls.domains[0].main=internal.${HOSTNAME}"
+      - "traefik.http.routers.api.tls.domains[0].sans=*.internal.${HOSTNAME}"
 
 networks:
   web:
