@@ -1,0 +1,3 @@
+unifi/log/*
+unifi/data/*
+*.env

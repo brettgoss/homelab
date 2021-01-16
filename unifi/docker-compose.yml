@@ -22,3 +22,17 @@ services:
       - 8843:8843/tcp # HTTPS portal
       - 8880:8880/tcp # HTTP portal
       - 3478:3478/udp # STUN service
+    networks:
+      - web
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.unifi.rule=Host(`unifi.${HOSTNAME}`)"
+      - "traefik.http.routers.unifi.entrypoints=web"
+      - "traefik.http.routers.unifi.tls=true"
+      - "traefik.http.routers.unifi.tls.passthrough=true"
+      - "traefik.http.services.unifi.loadbalancer.server.port=8443"
+      - "traefik.http.services.unifi.loadbalancer.server.scheme=https"
+
+networks:
+  web:
+    external: true
