@@ -2,16 +2,16 @@ version: "3.3"
 
 services:
   traefik:
-    image: "traefik:v2.3"
-    container_name: "traefik"
+    image: traefik:v2.3
+    container_name: traefik
     command:
       # - "--log.level=DEBUG"
-      - "--api.insecure=true"
-      - "--providers.docker=true"
-      - "--providers.docker.exposedbydefault=false"
-      - "--entrypoints.web.address=:80"
-      - "--entryPoints.web-secure.address=:443"
-      - "--serverstransport.insecureskipverify=true"
+      - --api.insecure=true
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --entrypoints.web.address=:80
+      - --entryPoints.web-secure.address=:443
+      - --serverstransport.insecureskipverify=true
       - --certificatesResolvers.primary.acme.email=${CLOUDFLARE_EMAIL}
       - --certificatesResolvers.primary.acme.storage=acme.json
       - --certificatesResolvers.primary.acme.dnsChallenge=true
