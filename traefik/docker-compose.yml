@@ -28,6 +28,8 @@ services:
       - "./acme.json:/acme.json"
     networks:
       - web
+    extra_hosts:
+      - host.docker.internal:172.17.0.1
     labels:
       # wildcard certs
       - "traefik.http.routers.api.tls.domains[0].main=internal.${HOSTNAME}"
