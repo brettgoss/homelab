@@ -1,6 +1,8 @@
 # My Minimal, Portable, Homelab Setup
 
-Containerized Traefik Reverse Proxy sitting on top of other containerized services. Designed to run on a raspberry pi 4.
+Containerized Traefik Reverse Proxy sitting on top of other containerized services.
+
+Designed to run on a raspberry pi 4.
 
 ## Installing
 
