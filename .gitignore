@@ -2,3 +2,15 @@ unifi/log/*
 unifi/data/*
 traefik/acme.json
 *.env
+*.pyc
+*.log
+
+# homeassistant
+homeassistant/**/.storage
+homeassistant/**/.cloud
+homeassistant/**/.google.token
+homeassistant/**/ip_bans.yaml
+homeassistant/**/secrets.yaml
+homeassistant/**/known_devices.yaml
+homeassistant/**/custom_components
+homeassistant/config/*
