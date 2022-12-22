@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   unifi-controller:
-    image: jacobalberty/unifi:v7.0
+    image: jacobalberty/unifi:v7.1
     container_name: unifi-controller
     restart: unless-stopped
     init: true
