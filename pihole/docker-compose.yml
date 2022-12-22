@@ -1,0 +1,39 @@
+version: "3.9"
+
+services:
+  pihole:
+    image: pihole/pihole:2022.12
+    container_name: pihole
+    hostname: pihole
+    restart: unless-stopped
+    environment:
+      TZ: 'America/Vancouver'
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - './etc/pihole/:/etc/pihole/'
+      - './etc/dnsmasq.d/:/etc/dnsmasq.d/'
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      # - "67:67/udp" # DHCP Server
+      # - "443:443/tcp" # Web interface - SSL handled by Traefik
+      # - "80:80/tcp" # Web interface - goes through Traefik
+    networks:
+      - web
+    labels:
+      - "traefik.enable=true" # Enable Traefik for this service
+      - "traefik.http.routers.pihole.rule=Host(`pihole.internal.${HOSTNAME}`)"
+      - "traefik.http.routers.pihole.entrypoints=web-secure"
+      - "traefik.http.routers.pihole.tls=true"
+      - "traefik.http.routers.pihole.tls.certResolver=primary"
+      - "traefik.http.services.pihole.loadbalancer.server.port=80"
+
+      # Don't know what these are used for...
+      # - "traefik.frontend.rule=HostRegexp:pihole.xxx,{catchall:.*}"
+      # - "traefik.frontend.priority=1"
+      # - "traefik.backend=pihole" 
+
+networks:
+  web:
+    external: true

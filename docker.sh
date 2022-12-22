@@ -1,5 +1,5 @@
 #!/bin/bash
-targets=( "unifi" "homeassistant" "traefik" )
+targets=( "unifi" "homeassistant" "pihole" "traefik" )
 command="$@"
 
 for i in "${targets[@]}"

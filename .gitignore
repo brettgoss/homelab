@@ -1,9 +1,16 @@
-unifi/log/*
-unifi/data/*
-traefik/acme.json
+# misc
 *.env
 *.pyc
 *.log
+
+# unifi
+unifi/log/*
+unifi/data/*
+unifi/config/*
+unifi/run/*
+
+# traefik
+traefik/acme.json
 
 # homeassistant
 homeassistant/**/.storage
@@ -14,3 +21,6 @@ homeassistant/**/secrets.yaml
 homeassistant/**/known_devices.yaml
 homeassistant/**/custom_components
 homeassistant/config/*
+
+# pihole
+pihole/etc
