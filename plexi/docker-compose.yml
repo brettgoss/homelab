@@ -1,0 +1,136 @@
+version: '3.9'
+
+services:
+  transmission:
+    image: haugene/transmission-openvpn
+    container_name: transmission
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - './config/transmission:/config'
+      - './data:/data'
+    environment:
+      - OPENVPN_PROVIDER=PIA
+      - OPENVPN_CONFIG=ca_vancouver,ca_toronto
+      - OPENVPN_USERNAME=${USERNAME}
+      - OPENVPN_PASSWORD=${PASSWORD}
+      - LOCAL_NETWORK=192.168.1.0/24
+      - PGID=1000
+      - PUID=1000
+      - UMASK=002
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+    # ports:
+      # - '9091:9091'
+    networks:
+      - web
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.transmission.rule=Host(`transmission.internal.${HOSTNAME}`)"
+      - "traefik.http.routers.transmission.entrypoints=web-secure"
+      - "traefik.http.routers.transmission.tls=true"
+      - "traefik.http.routers.transmission.tls.certResolver=primary"
+      - "traefik.http.services.transmission.loadbalancer.server.port=9091"
+
+  radarr:
+    container_name: radarr
+    image: cr.hotio.dev/hotio/radarr:latest
+    restart: always
+    # ports:
+      # - "7878:7878"
+    environment:
+      - PGID=1000
+      - PUID=1000
+      - UMASK=002
+      - TZ=America/Vancouver
+    networks:
+      - web
+    volumes:
+      - ./config/radarr:/config
+      - ./data:/data
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.radarr.rule=Host(`radarr.internal.${HOSTNAME}`)"
+      - "traefik.http.routers.radarr.entrypoints=web-secure"
+      - "traefik.http.routers.radarr.tls=true"
+      - "traefik.http.routers.radarr.tls.certResolver=primary"
+      - "traefik.http.services.radarr.loadbalancer.server.port=7878"
+
+  sonarr:
+    container_name: sonarr
+    image: cr.hotio.dev/hotio/sonarr:latest
+    restart: always
+    # ports:
+      # - "8989:8989"
+    environment:
+      - PGID=1000
+      - PUID=1000
+      - UMASK=002
+      - TZ=America/Vancouver
+    networks:
+      - web
+    volumes:
+      - ./config/sonarr:/config
+      - ./data:/data
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.sonarr.rule=Host(`sonarr.internal.${HOSTNAME}`)"
+      - "traefik.http.routers.sonarr.entrypoints=web-secure"
+      - "traefik.http.routers.sonarr.tls=true"
+      - "traefik.http.routers.sonarr.tls.certResolver=primary"
+      - "traefik.http.services.sonarr.loadbalancer.server.port=8989"
+
+  prowlarr:
+    container_name: prowlarr
+    image: cr.hotio.dev/hotio/prowlarr
+    # ports:
+      # - "9696:9696"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - UMASK=002
+      - TZ=America/Vancouver
+    networks:
+      - web
+    volumes:
+      - ./config/prowlarr:/config
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.prowlarr.rule=Host(`prowlarr.internal.${HOSTNAME}`)"
+      - "traefik.http.routers.prowlarr.entrypoints=web-secure"
+      - "traefik.http.routers.prowlarr.tls=true"
+      - "traefik.http.routers.prowlarr.tls.certResolver=primary"
+      - "traefik.http.services.prowlarr.loadbalancer.server.port=9696"
+
+  plex:
+    container_name: plex
+    image: cr.hotio.dev/hotio/plex
+    networks:
+      - web
+    # ports:
+    # - '32400:32400/tcp'
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - UMASK=002
+      - TZ=America/Vancouver
+      - PLEX_CLAIM=${PLEX_CLAIM}
+      - ADVERTISE_IP=${PLEX_DOMAIN}
+      - PLEX_PASS=no
+    volumes:
+      - ./config/plex:/config
+      - ./data:/data
+    labels:
+      - "traefik.enable=true"
+      - "traefik.protocol=https"
+      - "traefik.http.routers.plex.rule=Host(`plex.internal.${HOSTNAME}`)"
+      - "traefik.http.routers.plex.entrypoints=web-secure"
+      - "traefik.http.routers.plex.tls=true"
+      - "traefik.http.routers.plex.tls.certResolver=primary"
+      - "traefik.http.services.plex.loadbalancer.server.port=32400"
+
+networks:
+  web:
+    external: true

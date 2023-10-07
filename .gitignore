@@ -24,3 +24,7 @@ homeassistant/config/*
 
 # pihole
 pihole/etc
+
+# plex
+plexi/config/*
+plexi/data/*
