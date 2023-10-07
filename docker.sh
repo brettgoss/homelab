@@ -4,5 +4,5 @@ command="$@"
 
 for i in "${targets[@]}"
 do
-	cd $i && docker-compose $command && cd - > /dev/null
+	cd $i && docker compose $command && cd - > /dev/null
 done

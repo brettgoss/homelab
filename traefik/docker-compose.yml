@@ -5,8 +5,10 @@ services:
     image: traefik:v2.10
     container_name: traefik
     command:
-      # - "--log.level=DEBUG"
-      - --api.insecure=true
+      # - --log.level=DEBUG
+      # - --api.debug=true
+      - --api=true
+      - --api.dashboard=true
       - --providers.docker=true
       - --providers.docker.exposedbydefault=false
       - --entrypoints.web.address=:80
@@ -16,7 +18,7 @@ services:
       - --certificatesResolvers.primary.acme.storage=acme.json
       - --certificatesResolvers.primary.acme.dnsChallenge=true
       - --certificatesResolvers.primary.acme.dnsChallenge.provider=cloudflare
-      - --certificatesResolvers.primary.acme.dnsChallenge.delayBeforeCheck=0
+      - --certificatesResolvers.primary.acme.dnsChallenge.delayBeforeCheck=90
     environment:
       - CLOUDFLARE_EMAIL=${CLOUDFLARE_EMAIL}
       - CLOUDFLARE_API_KEY=${CLOUDFLARE_API_KEY}
@@ -31,9 +33,16 @@ services:
     extra_hosts:
       - host.docker.internal:172.17.0.1
     labels:
-      # wildcard certs
+       # wildcard certs
       - "traefik.http.routers.api.tls.domains[0].main=internal.${HOSTNAME}"
       - "traefik.http.routers.api.tls.domains[0].sans=*.internal.${HOSTNAME}"
+      # dash
+      - "traefik.enable=true"
+      - "traefik.http.routers.dash.rule=Host(`dash.internal.${HOSTNAME}`)"
+      - "traefik.http.routers.dash.service=api@internal"
+      - "traefik.http.routers.dash.entrypoints=web-secure"
+      - "traefik.http.routers.dash.tls=true"
+      - "traefik.http.routers.dash.tls.certResolver=primary"
 
 networks:
   web:
