@@ -1,0 +1,9 @@
+include:
+  - traefik/docker-compose.yml
+  - unifi/docker-compose.yml
+  - homeassistant/docker-compose.yml
+  - pihole/docker-compose.yml
+
+networks:
+  web:
+    external: true

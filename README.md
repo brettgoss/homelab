@@ -8,7 +8,7 @@ Designed to run on a raspberry pi 4.
 
 Most config files and sensitive data is excluded from this repo, but everything else should be bootable with just the `docker-compose.yml`'s.
 
-Clone the repo, and then boot each service individually with `docker-compose up` in their respective directories.
+Clone the repo, and then boot all services at once with `docker compose up` in the project root, or boot each service individually with `docker compose up` in its respective directory.
 
 ## Updating
 

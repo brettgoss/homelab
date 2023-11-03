@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   pihole:
-    image: pihole/pihole:2023.05.2
+    image: pihole/pihole:2023.10.0
     container_name: pihole
     hostname: pihole
     restart: unless-stopped
@@ -33,7 +33,3 @@ services:
       # - "traefik.frontend.rule=HostRegexp:pihole.xxx,{catchall:.*}"
       # - "traefik.frontend.priority=1"
       # - "traefik.backend=pihole" 
-
-networks:
-  web:
-    external: true

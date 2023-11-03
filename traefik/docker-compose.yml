@@ -1,4 +1,4 @@
-version: "3.3"
+version: "3.8"
 
 services:
   traefik:
@@ -43,7 +43,3 @@ services:
       - "traefik.http.routers.dash.entrypoints=web-secure"
       - "traefik.http.routers.dash.tls=true"
       - "traefik.http.routers.dash.tls.certResolver=primary"
-
-networks:
-  web:
-    external: true
