@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   pihole:
-    image: pihole/pihole:2023.10.0
+    image: pihole/pihole:2024.03.2
     container_name: pihole
     hostname: pihole
     restart: unless-stopped
@@ -32,4 +32,4 @@ services:
       # Don't know what these are used for...
       # - "traefik.frontend.rule=HostRegexp:pihole.xxx,{catchall:.*}"
       # - "traefik.frontend.priority=1"
-      # - "traefik.backend=pihole" 
+      # - "traefik.backend=pihole"
